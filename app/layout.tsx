@@ -21,7 +21,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Contently",
+  title: "Contently | Content Creation powered by AI",
   description: "Content Creation powered by AI",
 };
 
