@@ -1,7 +1,20 @@
 import { ThemeProvider } from "@/components/theme-provider"
+import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Metadata } from "next";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
+import { shadesOfPurple } from '@clerk/themes'
+import Header from "@/components/header";
+
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -26,9 +39,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
-            {children}
-          </main>
+          <ClerkProvider appearance={{
+            theme: shadesOfPurple,
+          }}>
+            <ConvexClientProvider>
+              <Header />
+              <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
+                {children}
+              </main>
+            </ConvexClientProvider>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
