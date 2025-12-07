@@ -13,6 +13,7 @@ import {
 } from '@clerk/nextjs'
 import { shadesOfPurple } from '@clerk/themes'
 import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const inter = Inter({
@@ -47,6 +48,7 @@ export default function RootLayout({
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
                 {children}
               </main>
+              <Toaster />
             </ConvexClientProvider>
           </ClerkProvider>
         </ThemeProvider>
