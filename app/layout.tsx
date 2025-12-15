@@ -5,11 +5,6 @@ import { Inter } from "next/font/google";
 import { Metadata } from "next";
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 import { shadesOfPurple } from '@clerk/themes'
 import Header from "@/components/header";
