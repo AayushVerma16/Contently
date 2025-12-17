@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-export async function generateBlogContent(title: string, category = "", tags = []) {
+export async function generateBlogContent(title: string, category = "", tags: string[]) {
     try {
         if (!title || title.trim().length === 0) {
             throw new Error("Title is required to generate content");
