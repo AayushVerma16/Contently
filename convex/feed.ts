@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { query } from "./_generated/server";
+import { Id } from "./_generated/dataModel";
 
 // Get feed posts - can improve it to show following posts first
 export const getFeed = query({
@@ -47,13 +48,13 @@ export const getSuggestedUsers = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    const limit = args.limit || 10;
+    const limit: number = args.limit || 10;
 
-    let currentUser = null;
-    let followedUserIds = [];
+    let currentUserId: Id<"users"> | null = null;
+    let followedUserIds: Id<"users">[] = [];
 
     if (identity) {
-      currentUser = await ctx.db
+      const currentUser = await ctx.db
         .query("users")
         .filter((q) =>
           q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier)
@@ -61,6 +62,7 @@ export const getSuggestedUsers = query({
         .unique();
 
       if (currentUser) {
+        currentUserId = currentUser._id;
         // Get users already being followed
         const follows = await ctx.db
           .query("follows")
@@ -74,7 +76,7 @@ export const getSuggestedUsers = query({
     // Get users with recent posts who aren't being followed
     const allUsers = await ctx.db
       .query("users")
-      .filter((q) => q.neq(q.field("_id"), currentUser?._id || ""))
+      .filter((q) => q.neq(q.field("_id"), currentUserId || ("" as any)))
       .collect();
 
     // Filter out already followed users and get their stats
@@ -136,8 +138,12 @@ export const getSuggestedUsers = query({
       .filter((user) => user.postCount > 0) // Only users with posts
       .sort((a, b) => {
         // Prioritize recent activity
-        const aRecent = a.lastPostAt > Date.now() - 7 * 24 * 60 * 60 * 1000;
-        const bRecent = b.lastPostAt > Date.now() - 7 * 24 * 60 * 60 * 1000;
+        const aRecent =
+          typeof a.lastPostAt === "number" &&
+          a.lastPostAt > Date.now() - 7 * 24 * 60 * 60 * 1000;
+        const bRecent =
+          typeof b.lastPostAt === "number" &&
+          b.lastPostAt > Date.now() - 7 * 24 * 60 * 60 * 1000;
 
         if (aRecent && !bRecent) return -1;
         if (!aRecent && bRecent) return 1;
@@ -198,4 +204,4 @@ export const getTrendingPosts = query({
 
     return postsWithAuthors.filter((post) => post.author !== null);
   },
-}); 
+});
