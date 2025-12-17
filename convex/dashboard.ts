@@ -289,7 +289,7 @@ export const getDailyViews = query({
       .collect();
 
     // Aggregate views by date
-    const viewsByDate = {};
+    const viewsByDate: Record<string, number> = {};
     dailyStats.forEach((stat) => {
       if (viewsByDate[stat.date]) {
         viewsByDate[stat.date] += stat.views;
