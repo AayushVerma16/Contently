@@ -34,26 +34,37 @@ export const store = mutation({
 });
 
 export const getCurrentUser = query({
-    handler: async(ctx) =>{
-        const identity = await ctx.auth.getUserIdentity();
-        if(!identity){
-            throw new Error("Not authenticated");
-        }
-
-        const user = await ctx.db
-        .query('users')
-        .withIndex("by_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-          )
-          .unique();
-
-        if(!user){
-            throw new Error("User not found");
-        }
-
-        return user;
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null; // Return null instead of throwing error
     }
-})
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
+      )
+      .unique();
+
+    return user; // Return user or null if not found
+  }
+});
+
+// Get user by username (public query)
+export const getByUsername = query({
+  args: {
+    username: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_username", (q) => q.eq("username", args.username))
+      .unique();
+
+    return user;
+  },
+});
 
 // Update username (checks availability and updates)
 export const updateUsername = mutation({

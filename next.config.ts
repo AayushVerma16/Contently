@@ -2,9 +2,24 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["images.unsplash.com", "img.clerk.com", "ik.imagekit.io"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        pathname: '/**', 
+      },
+    ],
   },
-  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;
