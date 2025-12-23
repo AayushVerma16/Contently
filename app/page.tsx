@@ -19,6 +19,7 @@ import {
 } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { Snowfall } from "react-snowfall";
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -44,6 +45,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
+      <Snowfall color="white"/>
       {/* Animated gradient background */}
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-green-900/20 animate-pulse"></div>
 
