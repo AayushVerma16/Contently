@@ -230,7 +230,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 💬 Contact
 
-For questions or feedback, reach out at: **gupta.pulkit2408@example.com**
+For questions or feedback, reach out at: **aayushverma1602@gmail.com**
 
 ---
 
